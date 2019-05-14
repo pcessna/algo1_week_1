@@ -18,6 +18,7 @@ public class PercolationStats {
 			   while(!percolatesTest) {
 				   r1 = StdRandom.uniform(1,n+1);
 				   r2 = StdRandom.uniform(1,n+1);
+				   int r3;
 				   if(!testCase.isOpen(r1,r2)) {
 					   testCase.open(r1,r2);
 					   runCount++;
@@ -41,14 +42,16 @@ public class PercolationStats {
 		   }
 		   public double confidenceHi()                  // high endpoint of 95% confidence interval
 		   {
-			   return 1.2;
+			   return 1.3;
 		   }
 		   
 		   public static void main(String[] args)        // test client (described below)
 		   {
-			   int gridSize = 20;
+			   int gridSize = 200;
 			   int trials = 500000000;
 			   PercolationStats test1 = new PercolationStats(gridSize,trials);
+			   //commit test
+			   //hmm
 			  	   
 			   System.out.print("\n\n"+test1.trialsUntilPercolate);
 			   System.out.print("\n\n"+(double)test1.trialsUntilPercolate / (double)(gridSize*gridSize));
