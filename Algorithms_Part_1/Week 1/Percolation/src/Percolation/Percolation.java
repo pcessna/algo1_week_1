@@ -5,9 +5,9 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
 	private boolean[][] grid;
-	private WeightedQuickUnionUF uf;
-	private int nn;
-	private int count;
+	private final WeightedQuickUnionUF uf;
+	private final int nn;
+	private int count = 0;
 
 	// create n-by-n grid, with all sites blocked
 	public Percolation(int n) {
@@ -25,6 +25,7 @@ public class Percolation {
 
 		if (row == 0) {
 			uf.union(0, convert3Dto2D(row, col));
+			count++;
 		}
 		if (row == nn - 1) {
 			uf.union((nn * nn) + 1, convert3Dto2D(row, col));
@@ -32,26 +33,34 @@ public class Percolation {
 		// is there a square below?
 		if ((row + 1) < nn) {
 			// is it open?
-			if (grid[row + 1][col])
+			if (grid[row + 1][col]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row + 1, col));
+				count++;
+			}
 		}
 		// is there a square above?
 		if ((row - 1) >= 0) {
 			// is it open?
-			if (grid[row - 1][col])
+			if (grid[row - 1][col]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row - 1, col));
+				count++;
+			}
 		}
 		// is there a square to the right?
 		if ((col + 1) < nn) {
 			// is it open?
-			if (grid[row][col + 1])
+			if (grid[row][col + 1]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row, col + 1));
+				count++;
+			}
 		}
 		// is there a square to the left?
 		if ((col - 1) >= 0) {
 			// is it open?
-			if (grid[row][col - 1])
+			if (grid[row][col - 1]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row, col - 1));
+				count++;
+			}
 		}
 	}
 
@@ -71,12 +80,6 @@ public class Percolation {
 
 	// number of open sites
 	public int numberOfOpenSites() {
-		for (int i = 0; i < nn; i++) {
-			for (int j = 0; j < nn; j++) {
-				if (grid[i][j])
-					count++;
-			}
-		}
 		return count;
 	}
 
@@ -88,9 +91,4 @@ public class Percolation {
 	private int convert3Dto2D(int row, int col) {
 		return ((row * nn) + col) + 1;
 	}
-
-	public static void main(String[] args) {
-
-	}
-
 }
