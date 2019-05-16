@@ -85,10 +85,6 @@ public class Percolation {
 		return uf.connected(0, (nn * nn) + 1);
 	}
 
-	public boolean[][] returnGrid() {
-		return grid;
-	}
-
 	private int convert3Dto2D(int row, int col) {
 		return ((row * nn) + col) + 1;
 	}
