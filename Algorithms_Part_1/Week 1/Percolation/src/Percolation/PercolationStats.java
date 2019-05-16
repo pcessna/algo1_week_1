@@ -7,11 +7,14 @@ import edu.princeton.cs.algs4.StdStats;
 public class PercolationStats {
 
 	private int numTrials;
-	double[] thresholds;
+	private double[] thresholds;
 
 	public PercolationStats(int n, int trials)// perform trials independent experiments on an n-by-n grid
 	{
 
+		if (n <= 0 || trials <= 0) {
+			throw new IllegalArgumentException("Given N <= 0 || T <= 0");
+		}
 		Percolation testCase = new Percolation(n);
 		thresholds = new double[trials];
 		numTrials = trials;

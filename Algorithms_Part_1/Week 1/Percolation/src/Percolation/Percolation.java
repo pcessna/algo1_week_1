@@ -62,7 +62,11 @@ public class Percolation {
 
 	// is site (row, col) full?
 	public boolean isFull(int row, int col) {
-		return !isOpen(row, col);
+		if (0 < row && row <= nn && 0 < col && col <= nn) {
+			return !isOpen(row, col);
+		} else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	// number of open sites
@@ -76,10 +80,6 @@ public class Percolation {
 		return count;
 	}
 
-	public boolean printCell(int row, int col) {
-		return grid[row][col];
-	}
-
 	// does the system percolate?
 	public boolean percolates() {
 		return uf.connected(0, (nn * nn) + 1);
@@ -89,33 +89,11 @@ public class Percolation {
 		return grid;
 	}
 
-	public WeightedQuickUnionUF returnUF() {
-		return uf;
-	}
-
-	public int convert3Dto2D(int row, int col) {
+	private int convert3Dto2D(int row, int col) {
 		return ((row * nn) + col) + 1;
 	}
 
-	public int helperLength() {
-		return nn * nn;
-	}
-
 	public static void main(String[] args) {
-		int n = 15;
-
-		Percolation perc = new Percolation(n);
-
-		System.out.print(perc.isOpen(1, 1));
-
-		boolean[][] grid = perc.returnGrid();
-		for (int i = 0; i < n; i++) {
-			System.out.print("\n");
-			for (int j = 0; j < n; j++) {
-				System.out.print(grid[i][j] + " ");
-				;
-			}
-		}
 
 	}
 
