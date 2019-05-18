@@ -11,6 +11,8 @@ public class Percolation {
 
 	// create n-by-n grid, with all sites blocked
 	public Percolation(int n) {
+		if (n <= 0)
+			throw new IllegalArgumentException();
 		nn = n;
 		grid = new boolean[n][n];
 		uf = new WeightedQuickUnionUF((n * n) + 2);
@@ -19,13 +21,19 @@ public class Percolation {
 	// open site (row, col) if it is not open already
 	public void open(int r, int c) {
 		// test for row<1 and col>n here******
+
+		if (r <= 0 || r > nn || c < 0) {
+			throw new java.lang.IllegalArgumentException();
+		}
 		int row = r - 1;
 		int col = c - 1;
-		grid[row][col] = true;
+		if (isOpen(r, c))
+			return;
 
+		grid[row][col] = true;
+		count++;
 		if (row == 0) {
 			uf.union(0, convert3Dto2D(row, col));
-			count++;
 		}
 		if (row == nn - 1) {
 			uf.union((nn * nn) + 1, convert3Dto2D(row, col));
@@ -35,7 +43,6 @@ public class Percolation {
 			// is it open?
 			if (grid[row + 1][col]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row + 1, col));
-				count++;
 			}
 		}
 		// is there a square above?
@@ -43,7 +50,6 @@ public class Percolation {
 			// is it open?
 			if (grid[row - 1][col]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row - 1, col));
-				count++;
 			}
 		}
 		// is there a square to the right?
@@ -51,7 +57,6 @@ public class Percolation {
 			// is it open?
 			if (grid[row][col + 1]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row, col + 1));
-				count++;
 			}
 		}
 		// is there a square to the left?
@@ -59,23 +64,23 @@ public class Percolation {
 			// is it open?
 			if (grid[row][col - 1]) {
 				uf.union(convert3Dto2D(row, col), convert3Dto2D(row, col - 1));
-				count++;
 			}
 		}
 	}
 
 	// is site (row, col) open?
-	public boolean isOpen(int row, int col) {
-		return (grid[row - 1][col - 1]);
+	public boolean isOpen(int r, int c) {
+		if (r <= 0 || r > nn || c > nn || c <= 0) {
+			throw new java.lang.IllegalArgumentException();
+		}
+		return (grid[r - 1][c - 1]);
 	}
 
 	// is site (row, col) full?
 	public boolean isFull(int row, int col) {
-		if (0 < row && row <= nn && 0 < col && col <= nn) {
-			return !isOpen(row, col);
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
+		if (row <= 0 || row > nn || col <= 0 || col > nn)
+			throw new java.lang.IllegalArgumentException();
+		return uf.connected(0, convert3Dto2D(row - 1, col - 1));
 	}
 
 	// number of open sites
@@ -90,5 +95,26 @@ public class Percolation {
 
 	private int convert3Dto2D(int row, int col) {
 		return ((row * nn) + col) + 1;
+	}
+
+	public static void main(String[] args) // test client (described below)
+	{
+		Percolation test = new Percolation(6);
+		test.open(1, 6);
+		System.out.print("\n" + "(1,6): " + "isOpen = " + test.isOpen(1, 6) + ", isFull = " + test.isFull(1, 6)
+				+ ", percolates = " + test.percolates() + ", numberOfOpenSites = " + test.numberOfOpenSites());
+		test.open(2, 6);
+		System.out.print("\n" + "(2,6): " + "isOpen = " + test.isOpen(2, 6) + ", isFull = " + test.isFull(2, 6)
+				+ ", percolates = " + test.percolates() + ", numberOfOpenSites = " + test.numberOfOpenSites());
+		test.open(3, 6);
+		System.out.print("\n" + "(3,6): " + "isOpen = " + test.isOpen(3, 6) + ", isFull = " + test.isFull(3, 6)
+				+ ", percolates = " + test.percolates() + ", numberOfOpenSites = " + test.numberOfOpenSites());
+		test.open(6, 2);
+		System.out.print("\n" + "(6,2): " + "isOpen = " + test.isOpen(6, 2) + ", isFull = " + test.isFull(6, 2)
+				+ ", percolates = " + test.percolates() + ", numberOfOpenSites = " + test.numberOfOpenSites());
+
+		// test.open(1, 2);
+		// test.open(3, 1);
+
 	}
 }

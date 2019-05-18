@@ -48,8 +48,6 @@ public class PercolationStats {
 
 	public double confidenceLo() // low endpoint of 95% confidence interval
 	{
-		int j = 4 * 3; // test
-		int i = 4 * 3; // test
 		return mean() - ((confidence * stddev()) / Math.sqrt(numTrials));
 	}
 
@@ -62,6 +60,7 @@ public class PercolationStats {
 	{
 		int n = Integer.parseInt(args[0]);
 		int t = Integer.parseInt(args[1]);
+
 		PercolationStats ps = new PercolationStats(n, t);
 		String confidence = ps.confidenceLo() + ", " + ps.confidenceHi();
 
@@ -69,5 +68,4 @@ public class PercolationStats {
 		StdOut.println("stddev                  = " + ps.stddev());
 		StdOut.println("95% confidence interval = " + confidence);
 	}
-
 }
